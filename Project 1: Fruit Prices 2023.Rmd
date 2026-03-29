@@ -1,0 +1,76 @@
+---
+title: "Analyzing Average Fruit Prices of 2023"
+author: "Anna Weiss, Lauren Moylan, Anthony Ferraro"
+date: "3/29/2026"
+output: 
+  html_document: 
+    code_folding: hide
+---
+
+```{r setup, include=FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(readr)
+library(mosaic)
+```
+
+### Introduction
+
+#### Description of the Data
+Our data set is from the US Department of Agriculture, focusing on the average 
+national cost of various fruits in 2023. For each fruit, the data set measures 
+the form of fruit (canned, fresh, dried, etc.), the average retail price of each
+fruit, the unit of measure (per pound, per pint, etc.), the preparation yield 
+factor, size of a cup equivalent of each fruit, the size of a cup equivalent 
+with each unit of measure (pounds, pints, etc.), and the average price per a cup 
+equivalent (i.e. how much a cup of a fruit would cost). 
+https://www.ers.usda.gov/data-products/fruit-and-vegetable-prices
+
+#### Data Import
+The data set was already neat and tidy when we acquired it. We were able to download the CSV file straight from the government website. 
+
+```{r}
+fruit_prices_2023 <- read_csv("fruit-prices-2023.csv")
+```
+### Univariate Data
+
+#### Form of Fruit
+```{r}
+ggplot(fruit_prices_2023, aes(x = fct_infreq(Form), fill = Form)) +
+  geom_bar() +
+  labs(title = "Count of Each Fruit Form", x = "Form of Fruit") +
+  theme_bw()
+
+fruit_prices_2023 %>%
+  count(Form) %>%
+  arrange(desc(n)) %>%
+  knitr::kable()
+```
+From the bar plot, we can see that Fresh is the most popular form of fruit to be sold in and Frozen is the least popular form of fruit to be sold in. In our numercial summary table, we can see that of the 62 fruits, 24 of them are sold as Fresh, 12 sold as Canned, 11 sold as Juice, 9 sold Dried, and, last but not least, 6 sold Frozen. 
+
+#### Average Retail Price
+```{r}
+ggplot(fruit_prices_2023, aes(x = AverageRetailPrice)) +
+  geom_histogram(binwidth = 0.9) +
+  theme_bw() +
+  labs(title = "Distribution of Fruit for each Average Retail Price", x = "Average Retail Price")
+
+favstats(~AverageRetailPrice, data = fruit_prices_2023) %>%
+  knitr::kable()
+```
+From the histogram, we can see that that the most common average retial price fro a fruit is around 2.50 dollars. Seldom does the average price of a fruit exceed 5.00 dollars. From our number summary, we can see that the minumum average retail price for a fruit is 0.41 dollars and the maximum average retail price for a fruit is 10.11 dollars.  
+
+#### Size of a Cup Equivalent 
+```{r}
+ggplot(fruit_prices_2023, aes(x = SizeOfACupEquivalent)) +
+  geom_histogram(binwidth = 0.05) +
+  theme_bw() +
+  labs(title = "Distribution of Fruit for Proportion of a Cup", x = "Proportion of a Cup")
+
+favstats(~SizeOfACupEquivalent, data = fruit_prices_2023) %>%
+  knitr::kable()
+```
+From the histogram, we can see that the most common proportion of a cup for a fruit in the data set to be is around 0.36. From the number summary, we can see that the minimum proportion of cup a fruit in the data set is 0.1232 and the maximum is 0.5401.
+
