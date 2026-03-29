@@ -30,7 +30,8 @@ equivalent (i.e. how much a cup of a fruit would cost).
 https://www.ers.usda.gov/data-products/fruit-and-vegetable-prices
 
 #### Data Import
-The data set was already neat and tidy when we acquired it. We were able to download the CSV file straight from the government website. 
+The data set was already neat and tidy when we acquired it. We were able to 
+download the CSV file straight from the government website. 
 
 ```{r}
 fruit_prices_2023 <- read_csv("fruit-prices-2023.csv")
@@ -49,56 +50,128 @@ fruit_prices_2023 %>%
   arrange(desc(n)) %>%
   knitr::kable()
 ```
-From the bar plot, we can see that Fresh is the most popular form of fruit to be sold in and Frozen is the least popular form of fruit to be sold in. In our numercial summary table, we can see that of the 62 fruits, 24 of them are sold as Fresh, 12 sold as Canned, 11 sold as Juice, 9 sold Dried, and, last but not least, 6 sold Frozen. 
+From the bar plot, we can see that Fresh is the most popular form of fruit to 
+be sold in and Frozen is the least popular form of fruit to be sold in. In our 
+numercial summary table, we can see that of the 62 fruits, 24 of them are sold 
+as Fresh, 12 sold as Canned, 11 sold as Juice, 9 sold Dried, and, last but not least, 6 sold Frozen. 
 
 #### Average Retail Price
 ```{r}
 ggplot(fruit_prices_2023, aes(x = AverageRetailPrice)) +
   geom_histogram(binwidth = 0.9) +
   theme_bw() +
-  labs(title = "Distribution of Fruit for each Average Retail Price", x = "Average Retail Price")
+  labs(title = "Distribution of Fruit for each Average Retail Price", x = 
+         "Average Retail Price")
 
 favstats(~AverageRetailPrice, data = fruit_prices_2023) %>%
   knitr::kable()
 ```
-From the histogram, we can see that that the most common average retial price fro a fruit is around 2.50 dollars. Seldom does the average price of a fruit exceed 5.00 dollars. From our number summary, we can see that the minumum average retail price for a fruit is 0.41 dollars and the maximum average retail price for a fruit is 10.11 dollars.  
+From the histogram, we can see that that the most common average retail price 
+for a fruit is around 2.50 dollars. Seldom does the average price of a fruit 
+exceed 5.00 dollars. From our number summary, we can see that the minimum 
+average retail price for a fruit is 0.41 dollars and the maximum average retail 
+price for a fruit is 10.11 dollars.  
 
 #### Size of a Cup Equivalent 
 ```{r}
 ggplot(fruit_prices_2023, aes(x = SizeOfACupEquivalent)) +
   geom_histogram(binwidth = 0.05) +
   theme_bw() +
-  labs(title = "Distribution of Fruit for Proportion of a Cup", x = "Proportion of a Cup")
+  labs(title = "Distribution of Fruit for Proportion of a Cup", x = "Proportion 
+       of a Cup")
 
 favstats(~SizeOfACupEquivalent, data = fruit_prices_2023) %>%
   knitr::kable()
 ```
-From the histogram, we can see that the most common proportion of a cup for a fruit in the data set to be is around 0.36. From the number summary, we can see that the minimum proportion of cup a fruit in the data set is 0.1232 and the maximum is 0.5401.
+From the histogram, we can see that the most common proportion of a cup for a 
+fruit in the data set to be is around 0.36. From the number summary, we can see 
+that the minimum proportion of cup a fruit in the data set is 0.1232 and the 
+maximum is 0.5401.
 
 ### Bivariate Data
 
 #### Average Retail Price by Form
 ```{r}
-ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, color = Form, fill = Form)) +
+ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, color = Form, fill = 
+                                Form)) +
   geom_density(alpha = 0.5) +
   labs(title = "Average Retail Price by Form", x = "Average Retail Price")
 
 favstats(AverageRetailPrice ~Form, data = fruit_prices_2023) %>%
   knitr::kable()
 ```
-From the density plot, we can see that the average retail price for canned fruit peaks at around 2.4 dollars, meaning it is the most common average retail price for canned fruit. Fresh and dried fruit have the widest distributions of price, with dried fruit tending to be the most expensive. From the number summary, canned fruit and juiced fruit have the lowest average price among the forms, with canned fruit costing an average of 2.50 dollars and juiced fruit costing an average of 2.11 dollars. Dried fruit is the most expensive by far with an average cost of 7.26 dollars.
+From the density plot, we can see that the average retail price for canned fruit 
+peaks at around 2.4 dollars, meaning it is the most common average retail price 
+for canned fruit. Fresh and dried fruit have the widest distributions of price, 
+with dried fruit tending to be the most expensive. From the number summary, 
+canned fruit and juiced fruit have the lowest average price among the forms, 
+with canned fruit costing an average of 2.50 dollars and juiced fruit costing 
+an average of 2.11 dollars. Dried fruit is the most expensive by far with an 
+average cost of 7.26 dollars.
 
 #### Comparing Average Retail Price and Size of a Cup Equivalent
 ```{r}
-ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) +
-  geom_point(color = "maroon") +
+ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) 
++ geom_point(color = "maroon") +
   geom_smooth(color = "hotpink") +
   theme_bw() +
-  labs(title = "Comparing the Average Retail Price to the Size of a Cup Equivalent of Each Fruit", 
-       x = "Average Retail Price", y = "Size of a Cup Equivalent")
+  labs(title = "Comparing the Average Retail Price to the Size of a Cup 
+       Equivalent of Each Fruit",  x = "Average Retail Price", y = "Size of a 
+       Cup Equivalent")
 
-cor(fruit_prices_2023$AverageRetailPrice, fruit_prices_2023$SizeOfACupEquivalent) %>%
+cor(fruit_prices_2023$AverageRetailPrice, fruit_prices_2023$SizeOfACupEquivalent) 
+  %>%
   knitr::kable()
 
 ```
 From the graph, we can see that as the size of a fruit goes down, the cost of it goes up. From our correlation command, we can see that there is a moderately strong negative relationship between average retail price and sie of a cup equivalent of each fruit, r = -0.67. 
+
+### Trivariate Data
+#### Comparing Fruit Form, Average Retail Price, and Size of a Cup Equivalent: Dot Plot
+```{r}
+ggplot(fruit_prices_2023,aes(x = AverageRetailPrice, y = SizeOfACupEquivalent))
+  + geom_point(aes(color = Form)) +
+  geom_smooth() +
+  labs(title = "Comparing Average Price and Size of Fruit by Form", 
+       x = "Average Retail Price", y = "Size of A Cup Equivalent") +
+  theme_bw() 
+```
+Including what we found out from our previous graph, we can see that canned 
+fruit tends to be the largest proportionally to a cup and the cheapest, whereas 
+dried fruit tends to be the smallest proportionally to cup and the most 
+expensive. 
+
+#### Comparing Fruit Form, Average Retail Price, and Size of a Cup Equivalent: 
+Fasceted
+```{r}
+ggplot(fruit_prices_2023,aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) 
+  +
+  geom_point(aes(color = Form)) +
+  facet_wrap(~Form) +
+  theme_bw()
+
+fruit_prices_2023 %>%
+  group_by(Form) %>%
+  summarize(correlation = cor(AverageRetailPrice, SizeOfACupEquivalent, 
+                              method = "pearson", use = "complete.obs")) %>%
+  knitr::kable()
+```
+Now that the data is separated by fruit form, we can see that fresh fruit has
+the widest range of both average retail price and size proportional to a cup. 
+Both frozen fruit and juiced fruit have really smile ranges in terms of size. 
+Consistent with previous plots, canned fruit and fruit juice are typically the 
+cheapest forms of fruit and dried fruit is typically the most expensive. From 
+our number summary, we can see that each from of fruit has a moderately weak 
+correlation with both size and average price. 
+
+### Conclusion
+Based on the multiple graphs looking at each variable individually as well as 
+together, there are many correlations between the variables. First, in many of 
+the graphs it is visible that dried fruit is on average the most expensive fruit
+while fresh fruit tends to have the largest range of retail price. On the other 
+end, canned fruit and juiced fruit tends to have the cheapest average retail 
+price. Looking at equivalent of a cup for the various fruits, both canned fruit
+and juiced fruit  tend to be sold in the same size proportional to a cup. Dried 
+fruit tends to be the smallest of the forms and frozen fruit falls right in the 
+middle. So to with the average price, fresh fruit has the widest range in size 
+proportional to a cup. 
