@@ -14,6 +14,7 @@ library(tidyr)
 library(dplyr)
 library(readr)
 library(mosaic)
+library(ggplot2)
 ```
 
 ### Introduction
@@ -74,3 +75,30 @@ favstats(~SizeOfACupEquivalent, data = fruit_prices_2023) %>%
 ```
 From the histogram, we can see that the most common proportion of a cup for a fruit in the data set to be is around 0.36. From the number summary, we can see that the minimum proportion of cup a fruit in the data set is 0.1232 and the maximum is 0.5401.
 
+### Bivariate Data
+
+#### Average Retail Price by Form
+```{r}
+ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, color = Form, fill = Form)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Average Retail Price by Form", x = "Average Retail Price")
+
+favstats(AverageRetailPrice ~Form, data = fruit_prices_2023) %>%
+  knitr::kable()
+```
+From the density plot, we can see that the average retail price for canned fruit peaks at around 2.4 dollars, meaning it is the most common average retail price for canned fruit. Fresh and dried fruit have the widest distributions of price, with dried fruit tending to be the most expensive. From the number summary, canned fruit and juiced fruit have the lowest average price among the forms, with canned fruit costing an average of 2.50 dollars and juiced fruit costing an average of 2.11 dollars. Dried fruit is the most expensive by far with an average cost of 7.26 dollars.
+
+#### Comparing Average Retail Price and Size of a Cup Equivalent
+```{r}
+ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) +
+  geom_point(color = "maroon") +
+  geom_smooth(color = "hotpink") +
+  theme_bw() +
+  labs(title = "Comparing the Average Retail Price to the Size of a Cup Equivalent of Each Fruit", 
+       x = "Average Retail Price", y = "Size of a Cup Equivalent")
+
+cor(fruit_prices_2023$AverageRetailPrice, fruit_prices_2023$SizeOfACupEquivalent) %>%
+  knitr::kable()
+
+```
+From the graph, we can see that as the size of a fruit goes down, the cost of it goes up. From our correlation command, we can see that there is a moderately strong negative relationship between average retail price and sie of a cup equivalent of each fruit, r = -0.67. 
