@@ -111,16 +111,15 @@ average cost of 7.26 dollars.
 
 #### Comparing Average Retail Price and Size of a Cup Equivalent
 ```{r}
-ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) 
-+ geom_point(color = "maroon") +
+ggplot(fruit_prices_2023, aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) + 
+  geom_point(color = "maroon") +
   geom_smooth(color = "hotpink") +
   theme_bw() +
   labs(title = "Comparing the Average Retail Price to the Size of a Cup 
        Equivalent of Each Fruit",  x = "Average Retail Price", y = "Size of a 
        Cup Equivalent")
 
-cor(fruit_prices_2023$AverageRetailPrice, fruit_prices_2023$SizeOfACupEquivalent) 
-  %>%
+cor(fruit_prices_2023$AverageRetailPrice, fruit_prices_2023$SizeOfACupEquivalent) %>%
   knitr::kable()
 
 ```
@@ -129,8 +128,8 @@ From the graph, we can see that as the size of a fruit goes down, the cost of it
 ### Trivariate Data
 #### Comparing Fruit Form, Average Retail Price, and Size of a Cup Equivalent: Dot Plot
 ```{r}
-ggplot(fruit_prices_2023,aes(x = AverageRetailPrice, y = SizeOfACupEquivalent))
-  + geom_point(aes(color = Form)) +
+ggplot(fruit_prices_2023,aes(x = AverageRetailPrice, y = SizeOfACupEquivalent))+
+  geom_point(aes(color = Form)) +
   geom_smooth() +
   labs(title = "Comparing Average Price and Size of Fruit by Form", 
        x = "Average Retail Price", y = "Size of A Cup Equivalent") +
@@ -144,8 +143,7 @@ expensive.
 #### Comparing Fruit Form, Average Retail Price, and Size of a Cup Equivalent: 
 Fasceted
 ```{r}
-ggplot(fruit_prices_2023,aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) 
-  +
+ggplot(fruit_prices_2023,aes(x = AverageRetailPrice, y = SizeOfACupEquivalent)) +
   geom_point(aes(color = Form)) +
   facet_wrap(~Form) +
   theme_bw()
